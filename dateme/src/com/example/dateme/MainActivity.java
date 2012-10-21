@@ -12,7 +12,7 @@ import com.facebook.android.FacebookError;
 
 public class MainActivity extends Activity {
 
-    Facebook facebook = new Facebook("YOUR_APP_ID");
+    Facebook facebook = new Facebook("291579937623543");
     AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
 
     @Override
