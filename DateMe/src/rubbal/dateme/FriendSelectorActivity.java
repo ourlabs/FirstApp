@@ -5,10 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.FacebookException;
 import com.facebook.FriendPickerFragment;
 import com.facebook.PickerFragment;
+import com.facebook.Session;
 
 public class FriendSelectorActivity extends FragmentActivity {
     
@@ -53,6 +59,41 @@ public class FriendSelectorActivity extends FragmentActivity {
                 
             }
         });
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    
+        menu.add(1, Menu.FIRST, Menu.FIRST, "Search");
+        menu.add(2, Menu.FIRST + 1, Menu.FIRST + 1, "Logout");
+        menu.add(3, Menu.FIRST + 2, Menu.FIRST + 2, "Preferences");
+        // getMenuInflater().inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    
+        switch (item.getItemId()) {
+            case 0:
+                Toast.makeText(this, "dc", 10).show();
+                break;
+            case 2:
+                Toast.makeText(this, "logout", 10).show();
+                
+                Session session = friendPickerFragment.getSession();
+                if (session.isOpened()) {
+                    Log.i("In Friend Selctor Activity", "Logging out");
+                    session.closeAndClearTokenInformation();
+                }
+                
+                break;
+            case 3:
+                Toast.makeText(this, "dc2", 10).show();
+                break;
+        
+        }
+        return false;
     }
     
     private void onError(Exception error) {

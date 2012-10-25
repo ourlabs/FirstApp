@@ -12,10 +12,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.FacebookActivity;
 import com.facebook.GraphUser;
-import com.facebook.LoginFragment;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.android.AsyncFacebookRunner;
@@ -49,8 +51,11 @@ public class MainActivity extends FacebookActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
+        menu.add(1, Menu.FIRST, Menu.FIRST, "Search");
+        menu.add(2, Menu.FIRST + 1, Menu.FIRST + 1, "Logout");
+        menu.add(3, Menu.FIRST + 2, Menu.FIRST + 2, "Preferences");
+        // getMenuInflater().inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
     
     /*
@@ -114,19 +119,46 @@ public class MainActivity extends FacebookActivity {
             switch (fragmentIndex) {
                 case LOGIN:
                     Log.i("Inside restoreFragment", "Creating new Fragment");
-                    fragments[fragmentIndex] = new LoginFragment();
+                    fragments[fragmentIndex] = new MyLoginFragment();
                     break;
                 default:
                     Log.e("Inside restoreFragment", "Unknown fragmentIndex");
                     break;
             }
         }
-        
     }
     
     private String getBundleKey(int fragmentIndex) {
     
         return FRAGMENT_PREFIX + fragmentIndex;
+        
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    
+        switch (item.getItemId()) {
+            case 0:
+                Toast.makeText(this, "dc", 10).show();
+                break;
+            case 2:
+                Toast.makeText(this, "dc1", 10).show();
+                new View.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                    
+                        Session session = getSession();
+                        session.closeAndClearTokenInformation();
+                    }
+                };
+                break;
+            case 3:
+                Toast.makeText(this, "dc2", 10).show();
+                break;
+        
+        }
+        return false;
     }
     
     @Override

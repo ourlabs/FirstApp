@@ -195,8 +195,9 @@ containing a value of this type.
         public static final int com_facebook_profile_picture_blank_square=0x7f02001c;
         public static final int com_facebook_top_background=0x7f02001d;
         public static final int com_facebook_top_button=0x7f02001e;
-        public static final int ic_action_search=0x7f02001f;
-        public static final int ic_launcher=0x7f020020;
+        public static final int heart_logo=0x7f02001f;
+        public static final int ic_action_search=0x7f020020;
+        public static final int ic_launcher=0x7f020021;
     }
     public static final class id {
         public static final int body_frame=0x7f040003;
@@ -240,7 +241,8 @@ containing a value of this type.
         public static final int com_facebook_picker_title_bar_stub=0x7f03000a;
         public static final int com_facebook_placepickerfragment=0x7f03000b;
         public static final int com_facebook_placepickerfragment_list_row=0x7f03000c;
-        public static final int pick_friends_activity=0x7f03000d;
+        public static final int login_fragment=0x7f03000d;
+        public static final int pick_friends_activity=0x7f03000e;
     }
     public static final class menu {
         public static final int activity_main=0x7f090000;
