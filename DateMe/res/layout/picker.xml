@@ -8,13 +8,13 @@
         android:id="@+id/friend_picker_fragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-    </FrameLayout>
 
-    <ListView
-        android:id="@+id/selection_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/button_border" />
+        <ListView
+            android:id="@+id/selection_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_border" />
+    </FrameLayout>
 
 </LinearLayout>

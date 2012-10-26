@@ -192,6 +192,8 @@ public class MainActivity extends FacebookActivity {
         FragmentManager manager = getSupportFragmentManager();
         
         if (session.getState() == SessionState.CREATED_TOKEN_LOADED) {
+            Log.i("In Main activity", " Created token loaded");
+
             session.openForRead(this);
             Fragment fragment = manager.findFragmentById(R.id.body_frame);
             
@@ -207,6 +209,8 @@ public class MainActivity extends FacebookActivity {
                 manager.beginTransaction().replace(R.id.body_frame, fragments[SELECTION]).commit();
             }
         } else {
+            Log.i("In Main activity", " Created Token not loaded");
+
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.body_frame, fragments[LOGIN]).commit();
         }
