@@ -28,11 +28,13 @@ public class MainActivity extends FacebookActivity {
     Facebook                    facebook         = new Facebook("291579937623543");
     AsyncFacebookRunner         asyncRunner      = new AsyncFacebookRunner(facebook);
     
-    private static final int    LOGIN            = 0;
-    private static final int    COUNT            = 1;
+    protected static final int  LOGIN            = 0;
+    protected static final int  SELECTION        = 1;
+    protected static final int  PICKER           = 2;
+    private static final int    COUNT            = 3;
     private static final String FRAGMENT_PREFIX  = "fragment";
     private static boolean      restoredFragment = false;
-    Fragment[]                  fragments        = new Fragment[COUNT];
+    protected static Fragment[] fragments        = new Fragment[COUNT];
     private boolean             isResume         = false;
     
     @Override
@@ -118,8 +120,16 @@ public class MainActivity extends FacebookActivity {
         } else {
             switch (fragmentIndex) {
                 case LOGIN:
-                    Log.i("Inside restoreFragment", "Creating new Fragment");
-                    fragments[fragmentIndex] = new MyLoginFragment();
+                    Log.i("Inside restoreFragment", "Creating new Login Fragment");
+                    fragments[LOGIN] = new MyLoginFragment();
+                    break;
+                case SELECTION:
+                    Log.i("Inside MainActivity", "Creating new Selection fragment");
+                    fragments[SELECTION] = new SelectionFragment();
+                    break;
+                case PICKER:
+                    Log.i("Inside MainActivity", "Creating new Picker fragment");
+                    fragments[PICKER] = new PickerFragment();
                     break;
                 default:
                     Log.e("Inside restoreFragment", "Unknown fragmentIndex");
@@ -142,7 +152,7 @@ public class MainActivity extends FacebookActivity {
                 Toast.makeText(this, "dc", 10).show();
                 break;
             case 2:
-                Toast.makeText(this, "dc1", 10).show();
+                Toast.makeText(this, "logout", 20).show();
                 new View.OnClickListener() {
                     
                     @Override
@@ -150,6 +160,10 @@ public class MainActivity extends FacebookActivity {
                     
                         Session session = getSession();
                         session.closeAndClearTokenInformation();
+                        Log.i("Inside MainActivity", "Logging out");
+                        FragmentManager manager = getSupportFragmentManager();
+                        manager.beginTransaction().replace(R.id.body_frame, fragments[LOGIN]).commit();
+                        
                     }
                 };
                 break;
@@ -178,14 +192,19 @@ public class MainActivity extends FacebookActivity {
         
         if (session.getState() == SessionState.CREATED_TOKEN_LOADED) {
             session.openForRead(this);
-            Log.i("In Main activity", " Starting selector activity");
-            Intent intent = new Intent(this, FriendSelectorActivity.class);
-            startActivity(intent);
+            Fragment fragment = manager.findFragmentById(R.id.body_frame);
+            
+            if (!(fragment instanceof SelectionFragment)) {
+                manager.beginTransaction().replace(R.id.body_frame, fragments[SELECTION]).commit();
+            }
         } else if (session.isOpened()) {
             // TODO Start new Activity
             Log.i("In Main activity", " Starting selector activity");
-            Intent intent = new Intent(this, FriendSelectorActivity.class);
-            startActivity(intent);
+            Fragment fragment = manager.findFragmentById(R.id.body_frame);
+            
+            if (!(fragment instanceof SelectionFragment)) {
+                manager.beginTransaction().replace(R.id.body_frame, fragments[SELECTION]).commit();
+            }
         } else {
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.body_frame, fragments[LOGIN]).commit();
