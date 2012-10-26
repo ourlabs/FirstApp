@@ -25,17 +25,17 @@ import com.facebook.android.Facebook;
 
 public class MainActivity extends FacebookActivity {
     
-    Facebook                    facebook         = new Facebook("291579937623543");
-    AsyncFacebookRunner         asyncRunner      = new AsyncFacebookRunner(facebook);
+    protected static Facebook            facebook         = new Facebook("291579937623543");
+    protected static AsyncFacebookRunner asyncRunner      = new AsyncFacebookRunner(facebook);
     
-    protected static final int  LOGIN            = 0;
-    protected static final int  SELECTION        = 1;
-    protected static final int  PICKER           = 2;
-    private static final int    COUNT            = 3;
-    private static final String FRAGMENT_PREFIX  = "fragment";
-    private static boolean      restoredFragment = false;
-    protected static Fragment[] fragments        = new Fragment[COUNT];
-    private boolean             isResume         = false;
+    protected static final int           LOGIN            = 0;
+    protected static final int           SELECTION        = 1;
+    protected static final int           PICKER           = 2;
+    private static final int             COUNT            = 3;
+    private static final String          FRAGMENT_PREFIX  = "fragment";
+    private static boolean               restoredFragment = false;
+    protected static Fragment[]          fragments        = new Fragment[COUNT];
+    private boolean                      isResume         = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -183,6 +183,7 @@ public class MainActivity extends FacebookActivity {
         if (null == session || session.getState().isClosed()) {
             session = new Session(this);
             Session.setActiveSession(session);
+            facebook.setAccessToken(session.getAccessToken());
         }
         if (restoredFragment) {
             return;
@@ -214,31 +215,6 @@ public class MainActivity extends FacebookActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
     
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1:
-                String results = "";
-                if (resultCode == RESULT_OK) {
-                    DateMeApplication application = (DateMeApplication) getApplication();
-                    Collection<GraphUser> selection = application.getSelectedUsers();
-                    if (null != selection && selection.size() > 0) {
-                        ArrayList<String> names = new ArrayList<String>();
-                        for (GraphUser user : selection) {
-                            names.add(user.getName());
-                        }
-                        
-                        results = TextUtils.join(", ", names);
-                    } else {
-                        results = "No Friends Selected";
-                    }
-                } else {
-                    results = "Cancelled";
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("You picked").setMessage(results).setPositiveButton("OK", null);
-                builder.show();
-                
-                break;
-        }
+        facebook.authorizeCallback(requestCode, resultCode, data);
     }
 }
