@@ -9,6 +9,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,28 +145,28 @@ public class PickerFragment extends Fragment {
             if (user != null) {
                 ImageView icon = (ImageView) view.findViewById(R.id.icon);
                 TextView name = (TextView) view.findViewById(R.id.text1);
-                TextView id = (TextView) view.findViewById(R.id.text2);
                 Log.i("In picker fragment", user.getProfilePictureView());
                 if (icon != null) {
                     try {
                         
                         String data = new JSONObject(user.getProfilePictureView()).getString("data");
                         String imgSrc = new JSONObject(data).getString("url");
-                        
+                        Log.e("Json data is :",data);
+                        Log.e("imgSrc is :" , imgSrc);
                         Bitmap bm = null;
                         try {
-                            URL aURL = new URL(imgSrc);
-                            URLConnection conn = aURL.openConnection();
-                            conn.connect();
-                            InputStream is = conn.getInputStream();
-                            BufferedInputStream bis = new BufferedInputStream(is);
-                            bm = BitmapFactory.decodeStream(bis);
-                            bis.close();
-                            is.close();
-                        } catch (IOException e) {
-                            Log.e("SHIT", "Error getting bitmap", e);
+                          bm = new FetchImage().execute(imgSrc).get(40000, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                          // TODO Auto-generated catch block
+                          e.printStackTrace();
+                        } catch (ExecutionException e) {
+                          // TODO Auto-generated catch block
+                          e.printStackTrace();
+                        } catch (TimeoutException e) {
+                          // TODO Auto-generated catch block
+                          e.printStackTrace();
                         }
-                        
+                        Log.e("bm is ",bm.toString());
                         icon.setImageBitmap(bm);
                         
                     } catch (JSONException e) {
@@ -174,9 +177,6 @@ public class PickerFragment extends Fragment {
                 
                 if (name != null) {
                     name.setText(user.getName());
-                }
-                if (id != null) {
-                    id.setText(user.getId());
                 }
                 
             }

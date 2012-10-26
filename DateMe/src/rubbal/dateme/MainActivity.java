@@ -1,15 +1,11 @@
 package rubbal.dateme;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +13,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.FacebookActivity;
-import com.facebook.GraphUser;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.android.AsyncFacebookRunner;
@@ -37,11 +32,12 @@ public class MainActivity extends FacebookActivity {
     protected static Fragment[]          fragments        = new Fragment[COUNT];
     private boolean                      isResume         = false;
     
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       setContentView(R.layout.activity_main);
         
         for (int i = 0; i < COUNT; i++) {
             Log.i("onCreate of MainAct", "Restoring Fragment number : " + i);
@@ -218,7 +214,7 @@ public class MainActivity extends FacebookActivity {
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    
+      super.onActivityResult(requestCode, resultCode, data);
         facebook.authorizeCallback(requestCode, resultCode, data);
     }
 }

@@ -12,7 +12,7 @@ public class UserObject {
     private String      profilePictureSrc;
     private int         requestCode;
     
-    public UserObject(String name, String id, int requestCode, String profilePictureSrc) {
+    public UserObject(String id, String name, int requestCode, String profilePictureSrc) {
     
         this.name = name;
         this.id = id;
